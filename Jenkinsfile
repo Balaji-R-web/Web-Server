@@ -1,37 +1,36 @@
-pipeline{
+pipeline {
     agent any
 
-    stages{
-        stage('Git clone'){
-            steps{
-                git 'https://github.com/Balaji-R-web/Web-Server.git'
+    stages {
+
+        stage('Git Clone') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'github-creds',
+                    url: 'https://github.com/Balaji-R-web/Web-Server.git'
             }
         }
-    
-    
-        stage('terraform'){
-            steps{
+
+        stage('Terraform Init') {
+            steps {
                 sh 'terraform init'
             }
         }
-    
-    
-        stage('Terraform Validate'){
-            steps{
+
+        stage('Terraform Validate') {
+            steps {
                 sh 'terraform validate'
             }
         }
-    
-    
-        stage('Terraform Plan'){
-            steps{
+
+        stage('Terraform Plan') {
+            steps {
                 sh 'terraform plan'
             }
         }
-    
-    
-        stage('Terraform Apply'){
-            steps{
+
+        stage('Terraform Apply') {
+            steps {
                 sh 'terraform apply -auto-approve'
             }
         }
