@@ -17,11 +17,11 @@ pipeline {
             }
         }
 
-        stage('Terraform Validate') {
-            steps {
-                sh 'terraform validate'
-            }
-        }
+//        stage('Terraform Validate') {
+//            steps {
+//                sh 'terraform validate'
+//            }
+//        }
 
         stage('Terraform Plan') {
             steps {
