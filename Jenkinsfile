@@ -6,7 +6,7 @@ pipeline {
         stage('Git Clone') {
             steps {
                 git branch: 'main',
-                    credentialsId: 'github-creds',
+                    credentialsId: 'git-creds',
                     url: 'https://github.com/Balaji-R-web/Web-Server.git'
             }
         }
@@ -17,21 +17,25 @@ pipeline {
             }
         }
 
-//        stage('Terraform Validate') {
-//            steps {
-//                sh 'terraform validate'
-//            }
-//        }
-
         stage('Terraform Plan') {
             steps {
-                sh 'terraform plan'
+                withCredentials([
+                    [$class: 'AmazonWebServicesCredentialsBinding',
+                     credentialsId: 'aws-creds']
+                ]) {
+                    sh 'terraform plan'
+                }
             }
         }
 
         stage('Terraform Apply') {
             steps {
-                sh 'terraform apply -auto-approve'
+                withCredentials([
+                    [$class: 'AmazonWebServicesCredentialsBinding',
+                     credentialsId: 'aws-creds']
+                ]) {
+                    sh 'terraform apply -auto-approve'
+                }
             }
         }
     }
